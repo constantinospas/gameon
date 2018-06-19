@@ -4,17 +4,25 @@
   justify-content: center;
 
   .match-card {
-    flex: 1 1 auto;
     margin: 10px;
+    flex: 1 1 auto;
     max-width: 500px;
 
-    .date {
-      flex: 0 0 auto;
-      border-bottom: 1px solid #ccc;
+    .match-header {
+      display: flex;
       margin-bottom: 5px;
       padding-bottom: 5px;
-    }
+      border-bottom: 1px solid #ccc;
+      justify-content: space-between;
 
+      .date {
+        flex: 0 0 auto;
+      }
+
+      .info {
+        flex: 0 0 auto;
+      }
+    }
     .options {
       flex: 0 0 auto;
       display: flex;

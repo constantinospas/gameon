@@ -1,6 +1,10 @@
 <mat-card class="match-card">
-  <div class="date">{{ match?.date }}</div>
-
+  <div class="match-header">
+    <div class="date">{{ match?.date }}</div>
+    <div class="info" *ngIf="betCount > 0">
+      Played
+    </div>
+  </div>
   <div class="options">
     <div class="team-container">
       <div>{{odd.odds.home}}</div>
