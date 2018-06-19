@@ -1,12 +1,12 @@
 import * as moment from 'moment'
 
-import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
 
-import { map, switchMap, tap } from 'rxjs/operators'
-import { of, ReplaySubject, Subject, timer } from 'rxjs'
+import {map, switchMap, tap} from 'rxjs/operators'
+import {of, ReplaySubject, Subject, timer} from 'rxjs'
 
-import { environment } from '../environments/environment'
+import {environment} from '../environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class ApiService {
   private _odds$: ReplaySubject<Odd[]> = new ReplaySubject(1)
   private _version = '00005'
 
-  constructor (private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
     if (window.localStorage.getItem('version') !== this._version) {
       window.localStorage.clear()
       window.localStorage.setItem('version', this._version)
@@ -57,7 +57,7 @@ export class ApiService {
       })
   }
 
-  public login (username, password) {
+  public login(username, password) {
     return this.httpClient
       .post(environment.apiEndpoint + '/login', {username, password})
       .pipe(tap(response => {
@@ -66,7 +66,7 @@ export class ApiService {
       }))
   }
 
-  public signup (email, nickname, username, password) {
+  public signup(email, nickname, username, password) {
     return this.httpClient
       .post(environment.apiEndpoint + '/user', {email, nickname, username, password})
       .pipe(tap(response => {
@@ -75,7 +75,7 @@ export class ApiService {
       }))
   }
 
-  public logout () {
+  public logout() {
     return this.httpClient
       .get(environment.apiEndpoint + '/logout', this._options())
       .pipe(tap(() => {
@@ -86,7 +86,7 @@ export class ApiService {
       }))
   }
 
-  public user () {
+  public user() {
     if (this._user$) {
       return this._user$
     }
@@ -110,15 +110,15 @@ export class ApiService {
     return this._user$
   }
 
-  public leaderboard () {
+  public leaderboard() {
     return this.httpClient.get(environment.apiEndpoint + '/leaderboard', this._options())
   }
 
-  public odds () {
+  public odds() {
     return this._odds$
   }
 
-  public odd (id) {
+  public odd(id) {
     if (this._odds[id]) {
       return of(this._odds[id])
     }
@@ -131,7 +131,7 @@ export class ApiService {
       }))
   }
 
-  public match (id) {
+  public match(id) {
     if (this._matches[id] && (Date.now() < this._matches[id].startTime || this._matches[id].updateTime > this._matches[id].startTime + 3 * 60 * 60 * 1000)) {
       return of(this._matches[id])
     }
@@ -152,7 +152,7 @@ export class ApiService {
       }))
   }
 
-  public team (id) {
+  public team(id) {
     if (this._teams[id]) {
       return of(this._teams[id])
     }
@@ -165,19 +165,19 @@ export class ApiService {
       }))
   }
 
-  public toggle (matchId: number, bet: BET) {
+  public toggle(matchId: number, bet: BET) {
     this._selected[matchId] = this._selected[matchId] === bet ? BET.NONE : bet
     window.localStorage.setItem('selected', JSON.stringify(this._selected))
     this._nextOdds()
   }
 
-  public discard () {
+  public discard() {
     this._selected = {}
     window.localStorage.setItem('selected', JSON.stringify(this._selected))
     this._nextOdds()
   }
 
-  public bet (amount) {
+  public bet(amount) {
     const bets = this._activeOdds
       .filter(odd => odd.selected && odd.selected !== BET.NONE)
       .map(odd => ({oddId: odd.id, selected: odd.selected}))
@@ -187,7 +187,7 @@ export class ApiService {
       .pipe(tap(() => this.discard()))
   }
 
-  private _nextOdds () {
+  private _nextOdds() {
     this._activeOdds
       .forEach(odd => {
         odd.selected = this._selected[odd.matchId] || BET.NONE
@@ -205,7 +205,7 @@ export class ApiService {
     this._odds$.next(sorted)
   }
 
-  private _options () {
+  private _options() {
     return {headers: {Authorization: 'Bearer ' + this._token}}
   }
 }
