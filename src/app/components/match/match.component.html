@@ -2,7 +2,7 @@
   <div class="match-header">
     <div class="date">{{ match?.date }}</div>
     <div class="info" *ngIf="betCount > 0">
-      Played
+      {{betCount + ' ' + (betCount > 1 ? 'bets' : 'bet')}}
     </div>
   </div>
 
